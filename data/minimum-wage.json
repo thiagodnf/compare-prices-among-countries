@@ -1,0 +1,26 @@
+[
+    {
+        "name": "United States of America",
+        "code": "USA",
+        "flag": "flag-icon-us",
+        "currency": "USD",
+        "currencyCode": "US$",
+        "minimumWage": "7.50" 
+    },
+    {
+        "name": "Brazil",
+        "code": "BRA",
+        "flag": "flag-icon-br",
+        "currency": "Real",
+        "currencyCode": "R$",
+        "minimumWage": "4.54" 
+    },
+    {
+        "name": "Germany",
+        "code": "DEU",
+        "flag": "flag-icon-de",
+        "currency": "Euro",
+        "currencyCode": "€",
+        "minimumWage": "9.19" 
+    }
+]
