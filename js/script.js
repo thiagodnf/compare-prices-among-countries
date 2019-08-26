@@ -20,9 +20,9 @@ function updateURL(countryA, countryB, productA, productB){
         var host = window.location.host;
         var pathname = window.location.pathname;
 
-        var params = `country-a=${countryA}&country-b=${countryB}&product-a=${productA}&product-b=${productB}`
+        var params = convertToURLParameters(countryA, countryB, productA, productB, 0);
 
-        var newUrl = `${protocol}//${host}${pathname}?${params}`;
+        var newUrl = `${protocol}//${host}${pathname}${params}`;
         
         window.history.pushState({path: newUrl}, '', newUrl);
     }
@@ -51,6 +51,11 @@ function findCountryByCode(code){
 
     return;
 }
+
+function convertToURLParameters(countryA, countryB, productA, productB, compare){
+    return `?country-a=${countryA}&country-b=${countryB}&product-a=${productA.toFixed(2)}&product-b=${productB.toFixed(2)}&compare=${compare}`
+}
+
 /**
  * Convert string number to float
  * 
@@ -70,6 +75,7 @@ function convertToFloat(number) {
 
     return result;
 }
+
 /**
  * Return the time in a friendly form
  * 
@@ -247,8 +253,8 @@ $(function(){
         $('#country-a').selectpicker('val', getDefaultCountryA().name);
         $('#country-b').selectpicker('val', getDefaultCountryB().name);
 
-        $('#product-a').val($('#product-a').masked(getDefaultProductA()));
-        $('#product-b').val($('#product-b').masked(getDefaultProductB()));
+        $('#product-a').val($('#product-a').masked(getDefaultProductA().toFixed(2)));
+        $('#product-b').val($('#product-b').masked(getDefaultProductB().toFixed(2)));
 
         $("#product-a").focus();
         $("#product-a").select();
@@ -285,4 +291,80 @@ $(function(){
 
         return false;
     });
+
+    $("#btn-suggestions").click(function(event){
+        event.preventDefault();
+
+        $('#modal-suggestions').modal('show');
+
+        return false;
+    });
+
+    $('#modal-suggestions').on('show.bs.modal', function (e) {
+
+        $.get( "data/suggestions.json", function( data ) {       
+
+            var categories = []; 
+
+            $.each(data, function(i, item){
+                
+                if(!categories.includes(item.category)){
+                    categories.push(item.category);
+                }
+            }); 
+
+            $("#suggestions-tab").empty();
+
+            $.each(categories, function(i, category){
+
+                var id = `suggestion-${category}`;
+
+                $("#suggestions-tab").append(`<a class="nav-link" data-toggle="pill" href="#${id}">${category}</a>`);
+
+                $("#suggestions-content").append(`<div class="tab-pane fade" id="${id}">
+                    <table class="table table-striped table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Country A</th>
+                                <th>Country B</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </div>
+                `);
+            });
+
+            $.each(data, function(i, item){
+
+                var protocol = window.location.protocol;
+                var host = window.location.host;
+                var pathname = window.location.pathname;
+
+                var params = convertToURLParameters(item["country-a"], item["country-b"], item["product-a"], item["product-b"], 1);
+
+                var newUrl = `${protocol}//${host}${pathname}${params}`;
+
+                var countryA = findCountryByCode(item["country-a"]);
+                var countryB = findCountryByCode(item["country-b"]);
+
+                var tr = `
+                    <tr>
+                        <td><a href="${newUrl}">${item.name}</a></td>
+                        <td><span class="flag-icon ${countryA.flag}"></span> ${countryA.code}</td>
+                        <td><span class="flag-icon ${countryB.flag}"></span> ${countryB.code}</td>
+                    </tr>
+                `;
+
+                $(`#suggestion-${item.category} table tbody`).append(tr);
+            });
+
+            // Always select the first tab as default
+            if(categories.length >= 1){
+                $(`#suggestions-tab a[href="#suggestion-${categories[0]}"]`).tab('show')
+            }
+        });
+    });
+   
 })
