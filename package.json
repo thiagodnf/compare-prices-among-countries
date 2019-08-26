@@ -1,7 +1,7 @@
 {
 	"name": "compare-prices-among-countries",
 	"version": "1.0.0",
-	"description": "Compare Prices Among Countries",
+	"description": "See the time needed to buy the same product among different countries",
 	"main": "server.js",
 	"scripts": {
 		"start": "node server.js"
