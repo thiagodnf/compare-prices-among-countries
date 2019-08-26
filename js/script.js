@@ -150,7 +150,13 @@ function getCountryAFromURL(){
 function getCountryBFromURL(){
     return (new Url).query["country-b"];
 }
+function getCompareFromURL(){
+    return (new Url).query["compare"];
+}
 
+function getDefaultCompare(){
+    return convertToFloat(getCompareFromURL()) || 0;
+}
 function getDefaultProductA(){
     return convertToFloat(getProductAFromURL()) || 0.0;;
 }
@@ -162,6 +168,46 @@ function getDefaultCountryA(){
 }
 function getDefaultCountryB(){
     return findCountryByCode(getCountryBFromURL()) || findCountryByName("United States of America");
+}
+
+function compare(){
+    var countryAName= $("#country-a").val();
+    var countryBName = $("#country-b").val();
+
+    var countryA = findCountryByName(countryAName);
+    var countryB = findCountryByName(countryBName);
+
+    var productA = $("#product-a").val();
+    var productB = $("#product-b").val();
+
+    if(!productA){
+        alert("The price of Product A is required");
+        $("#product-a").select();
+        return;
+    }
+    if(!productB){
+        alert("The price of Product B is required");
+        $("#product-b").select();
+        return;
+    }
+
+    productA = productA.replaceAll(",","");
+    productB = productB.replaceAll(",","");
+
+    productA = convertToFloat(productA);
+    productB = convertToFloat(productB);
+
+    var priceA = productA/countryA.minimumWage;
+    var priceB = productB/countryB.minimumWage;
+
+    $("#country-a-result").html(getResult(countryA, priceA));
+    $("#country-b-result").html(getResult(countryB, priceB));
+
+    updateURL(countryA.code, countryB.code, productA, productB);
+    
+    $('html, body').animate({
+        scrollTop: $(".result").offset().top
+    }, 1000);
 }
 
 $(function(){
@@ -206,6 +252,10 @@ $(function(){
 
         $("#product-a").focus();
         $("#product-a").select();
+
+        if(getDefaultCompare() == 1){
+            compare();
+        }
     });
 
     $(".countries").on("changed.bs.select", function(event, clickedIndex, newValue, oldValue) {
@@ -231,43 +281,7 @@ $(function(){
     $("#btn-compare").click(function(event){
         event.preventDefault();
 
-        var countryAName= $("#country-a").val();
-        var countryBName = $("#country-b").val();
-
-        var countryA = findCountryByName(countryAName);
-        var countryB = findCountryByName(countryBName);
-
-        var productA = $("#product-a").val();
-        var productB = $("#product-b").val();
-
-        if(!productA){
-            alert("The price of Product A is required");
-            $("#product-a").select();
-            return;
-        }
-        if(!productB){
-            alert("The price of Product B is required");
-            $("#product-b").select();
-            return;
-        }
-
-        productA = productA.replaceAll(",","");
-        productB = productB.replaceAll(",","");
-
-        productA = convertToFloat(productA);
-        productB = convertToFloat(productB);
-
-        var priceA = productA/countryA.minimumWage;
-        var priceB = productB/countryB.minimumWage;
-
-        $("#country-a-result").html(getResult(countryA, priceA));
-        $("#country-b-result").html(getResult(countryB, priceB));
-
-        updateURL(countryA.code, countryB.code, productA, productB);
-        
-        $('html, body').animate({
-            scrollTop: $(".result").offset().top
-        }, 1000);
+        compare();
 
         return false;
     });
