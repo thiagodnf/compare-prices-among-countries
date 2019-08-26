@@ -15,16 +15,8 @@ String.prototype.replaceAll = function(search, replacement) {
 function updateURL(countryA, countryB, productA, productB){
     
     if (history.pushState) {
-
-        var protocol = window.location.protocol;
-        var host = window.location.host;
-        var pathname = window.location.pathname;
-
-        var params = convertToURLParameters(countryA, countryB, productA, productB, 0);
-
-        var newUrl = `${protocol}//${host}${pathname}${params}`;
-        
-        window.history.pushState({path: newUrl}, '', newUrl);
+        var url = getURLForSharing(countryA, countryB, productA, productB, 0);
+        window.history.pushState({path: url}, '', url);
     }
 }
 
@@ -54,6 +46,17 @@ function findCountryByCode(code){
 
 function convertToURLParameters(countryA, countryB, productA, productB, compare){
     return `?country-a=${countryA}&country-b=${countryB}&product-a=${productA.toFixed(2)}&product-b=${productB.toFixed(2)}&compare=${compare}`
+}
+
+function getURLForSharing(countryA, countryB, productA, productB, compare){
+
+    var protocol = window.location.protocol;
+    var host = window.location.host;
+    var pathname = window.location.pathname;
+
+    var params = convertToURLParameters(countryA, countryB, productA, productB, compare);
+
+    return `${protocol}//${host}${pathname}${params}`;
 }
 
 /**
@@ -177,52 +180,90 @@ function getDefaultCountryB(){
 }
 
 function compare(){
-    var countryAName= $("#country-a").val();
-    var countryBName = $("#country-b").val();
+   
+    var countryA = getCountryAName();
+    var countryB = getCountryBName();
 
-    var countryA = findCountryByName(countryAName);
-    var countryB = findCountryByName(countryBName);
+    var priceOfProductA = getPriceOfProductA();
+    var priceOfProductB = getPriceOfProductB();
 
-    var productA = $("#product-a").val();
-    var productB = $("#product-b").val();
+    var timeToBuyA = priceOfProductA/countryA.minimumWage;
+    var timeToBuyB = priceOfProductB/countryB.minimumWage;
 
-    if(!productA){
-        alert("The price of Product A is required");
-        $("#product-a").select();
-        return;
-    }
-    if(!productB){
-        alert("The price of Product B is required");
-        $("#product-b").select();
-        return;
-    }
+    $("#country-a-result").html(getResult(countryA, timeToBuyA));
+    $("#country-b-result").html(getResult(countryB, timeToBuyB));
 
-    productA = productA.replaceAll(",","");
-    productB = productB.replaceAll(",","");
-
-    productA = convertToFloat(productA);
-    productB = convertToFloat(productB);
-
-    var priceA = productA/countryA.minimumWage;
-    var priceB = productB/countryB.minimumWage;
-
-    $("#country-a-result").html(getResult(countryA, priceA));
-    $("#country-b-result").html(getResult(countryB, priceB));
-
-    updateURL(countryA.code, countryB.code, productA, productB);
+    updateURL(countryA.code, countryB.code, priceOfProductA, priceOfProductB);
     
     $('html, body').animate({
         scrollTop: $(".result").offset().top
     }, 1000);
 }
 
+function getPriceOfProductA(){
+
+    var productA = $("#product-a").val();
+
+    if(!productA){
+        throw new Error("The price of Product A is required");
+    }
+
+    productA = productA.replaceAll(",","");
+
+    return convertToFloat(productA);
+}
+
+function getPriceOfProductB(){
+
+    var productB = $("#product-b").val();
+
+    if(!productB){
+        throw new Error("The price of Product B is required");
+    }
+
+    productB = productB.replaceAll(",","");
+
+    return convertToFloat(productB);
+}
+
+function getCountryAName(){
+
+    var countryName = $("#country-a").val();
+
+    if(!countryName){
+        throw new Error("The country name is required");
+    }
+
+    return findCountryByName(countryName);
+}
+
+function getCountryBName(){
+
+    var countryName = $("#country-b").val();
+
+    if(!countryName){
+        throw new Error("The country name is required");
+    }
+
+    return findCountryByName(countryName);
+}
+
 $(function(){
 
     $('.money').mask('000,000,000,000,000.00', {reverse: true});
 
+    $('[data-toggle="popover"]').popover()
+
     $("#country-a").selectpicker();
     $("#country-b").selectpicker({dropdownAlignRight: true});
+
+    new ClipboardJS('.btn-copy-to-clipboard');
     
+    window.addEventListener("error", function (e) {
+        alert(e.error.message);
+        return false;
+    })
+
     $.get( "data/minimum-wage.json", function( result ) {
         
         data = result;
@@ -300,6 +341,30 @@ $(function(){
         return false;
     });
 
+    $("#btn-share").click(function(event){
+        event.preventDefault();
+
+        $('#modal-share').modal('show');
+
+        return false;
+    });
+
+
+    $('#modal-share').on('show.bs.modal', function (e) {
+
+        var countryA = getCountryAName();
+        var countryB = getCountryBName();
+
+        var priceOfProductA = getPriceOfProductA();
+        var priceOfProductB = getPriceOfProductB();
+
+        var newUrl = getURLForSharing(countryA.code, countryB.code, priceOfProductA, priceOfProductB, 1);
+
+        $("#share-url").val(newUrl);
+    });
+
+    
+
     $('#modal-suggestions').on('show.bs.modal', function (e) {
 
         $.get( "data/suggestions.json", function( data ) {       
@@ -338,13 +403,7 @@ $(function(){
 
             $.each(data, function(i, item){
 
-                var protocol = window.location.protocol;
-                var host = window.location.host;
-                var pathname = window.location.pathname;
-
-                var params = convertToURLParameters(item["country-a"], item["country-b"], item["product-a"], item["product-b"], 1);
-
-                var newUrl = `${protocol}//${host}${pathname}${params}`;
+                var newUrl = getURLForSharing(item["country-a"], item["country-b"], item["product-a"], item["product-b"], 1);
 
                 var countryA = findCountryByCode(item["country-a"]);
                 var countryB = findCountryByCode(item["country-b"]);
