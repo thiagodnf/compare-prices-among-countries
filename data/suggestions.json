@@ -32,5 +32,18 @@
                 "price": 349.00
             }
         ]
+    },
+    {
+        "name": "Ford Edge ST Model 2019",
+        "entries": [
+            {
+                "countryCode": "USA",
+                "price": 42355.00
+            },
+            {
+                "countryCode": "BRA",
+                "price": 299000.00
+            }
+        ]
     }
 ]
