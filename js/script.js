@@ -37,17 +37,32 @@ function findCountryByCode(code){
     return;
 }
 
-function convertToURLParameters(countryA, countryB, productA, productB, compare){
-    return `?country-a=${countryA}&country-b=${countryB}&product-a=${productA.toFixed(2)}&product-b=${productB.toFixed(2)}&compare=${compare}`
+function convertToURLParameters(entries, compare){
+
+    var countries = "countries=";
+    var prices = "prices=";
+
+    $.each(entries, function(i, entry){
+        
+        countries += entry.countryCode;
+        prices += entry.price.toFixed(2);
+
+        if(i+1 != entries.length){
+            countries += ",";
+            prices += ",";
+        }
+    });
+
+    return `?${countries}&${prices}&compare=${compare}`;
 }
 
-function getURLForSharing(countryA, countryB, productA, productB, compare){
+function getURLForSharing(entries, compare){
 
     var protocol = window.location.protocol;
     var host = window.location.host;
     var pathname = window.location.pathname;
 
-    var params = convertToURLParameters(countryA, countryB, productA, productB, compare);
+    var params = convertToURLParameters(entries, compare);
 
     return `${protocol}//${host}${pathname}${params}`;
 }
@@ -160,23 +175,11 @@ function getResult(country, timeToBuyIt){
     `;
 }
 
-function getProductAFromURL(){
-    return (new Url).query["product-a"];
-}
-function getProductBFromURL(){
-    return (new Url).query["product-b"];
-}
-function getCountryAFromURL(){
-    return (new Url).query["country-a"];
-}
-function getCountryBFromURL(){
-    return (new Url).query["country-b"];
-}
-function getCompareFromURL(){
-    return (new Url).query["compare"];
-}
+function getEntryHTML(country, price = 0.0){
 
-function getEntryHTML(country){
+    if(!country){
+        return "";
+    }
 
     var entryId = ENTRY_ID++;
 
@@ -197,7 +200,7 @@ function getEntryHTML(country){
                                     <label for="price-${entryId}">Price</label>
                                     <div class="input-group ">
                                         <div class="input-group-prepend"><span class="input-group-text">${country.currency}</span></div>
-                                        <input type="text" class="form-control price" id="price-${entryId}" autofocus autocomplete="off" pattern="[0-9]*" value="0.00">
+                                        <input type="text" class="form-control price" id="price-${entryId}" autofocus autocomplete="off" pattern="[0-9]*" value="${price.toFixed(2)}">
                                     </div>
                                     <small id="product-a-hep" class="form-text text-muted">${country.currency} ${country.minimumWage} per hour</small>
                                 </div>
@@ -241,6 +244,32 @@ function addEntry(html){
     $(".entries").append(html).find(".price").mask('000,000,000,000,000.00', {reverse: true});
 }
 
+function compare(){
+    
+    var entries = getEntries();
+
+    if (entries.length == 0){
+        throw new Error("There are no countries");
+    }
+
+    $(".results").empty();
+
+    $.each(entries, function(i, entry){
+
+        var country = findCountryByCode(entry.countryCode);
+
+        var timeToBuyIt = entry.price/country.minimumWage;
+
+        var result = getResult(country, timeToBuyIt);
+
+        $(".results").append(result);
+    })
+
+    $('html, body').animate({
+        scrollTop: $(".results").offset().top
+    }, 1000);
+}
+
 $(function(){
 
     new ClipboardJS('.btn-copy-to-clipboard');
@@ -281,9 +310,36 @@ $(function(){
 
         $('#countries').selectpicker('refresh');
 
+
+        var url = new Url;
+
+        var countries = ["BRA", "USA"];
+        var prices = ["0.00", "0.00"];
+       
+        if (url.query.countries){
+            countries = url.query.countries.split(",");
+        }
+        if (url.query.prices){
+            prices = url.query.prices.split(",");
+        }
+        
+        while(countries.length > prices.length){
+            prices.push("0.00");
+        }
+
         // The default entries
-        addEntry(getEntryHTML(findCountryByCode("BRA")));
-        addEntry(getEntryHTML(findCountryByCode("USA")));
+
+        for (var i = 0; i < countries.length; i++){
+
+            var country = countries[i];
+            var price = prices[i];
+            
+            addEntry(getEntryHTML(findCountryByCode(country), convertToFloat(price) ));
+        }
+
+        if (url.query.compare && url.query.compare === "1"){
+            compare();
+        }
     });
 
     $("#btn-suggestions").click(function(event){
@@ -304,13 +360,13 @@ $(function(){
 
     $('#modal-share').on('show.bs.modal', function (e) {
 
-        var countryA = getCountryAName();
-        var countryB = getCountryBName();
+        var entries = getEntries();
 
-        var priceOfProductA = getPriceOfProductA();
-        var priceOfProductB = getPriceOfProductB();
+        if (entries.length == 0){
+            throw new Error("There are no countries");
+        }
 
-        var newUrl = getURLForSharing(countryA.code, countryB.code, priceOfProductA, priceOfProductB, 1);
+        var newUrl = getURLForSharing(entries, 1);
 
         $("#share-url").val(newUrl);
     });
@@ -415,28 +471,7 @@ $(function(){
     $("#btn-compare").click(function(event){
         event.preventDefault();
 
-        var entries = getEntries();
-
-        if (entries.length == 0){
-            throw new Error("There are no countries");
-        }
-
-        $(".results").empty().append(`<h3 class="mb-3">Results</h3>`);
-
-        $.each(entries, function(i, entry){
-
-            var country = findCountryByCode(entry.countryCode);
-
-            var timeToBuyIt = entry.price/country.minimumWage;
-
-            var result = getResult(country, timeToBuyIt);
-
-            $(".results").append(result);
-        })
-    
-        $('html, body').animate({
-            scrollTop: $(".results").offset().top
-        }, 1000);
+        compare();
       
         return false;
     });
