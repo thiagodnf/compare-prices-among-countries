@@ -1,9 +1,5 @@
-var SECOND_IN_MILISECONDS = 1000;
-var MINUTE_IN_MILISECONDS = 60 * SECOND_IN_MILISECONDS;
-var HOUR_IN_MILISECONDS = 60 * MINUTE_IN_MILISECONDS;
-var DAY_IN_MILISECONDS = 24 * HOUR_IN_MILISECONDS;
-var MONTH_IN_MILISECONDS = 30 * DAY_IN_MILISECONDS;
-var YEAR_IN_MILISECONDS = 12 * MONTH_IN_MILISECONDS;
+var HOURS_OF_WORK = 24;
+var DAYS_OF_WORK = 30;
 
 var data = [];
 var ENTRY_ID = 1;
@@ -93,6 +89,13 @@ function convertToFloat(number) {
  * @param {number} num The time in miliseconds
  */
 function convertTime(num) {
+
+    var SECOND_IN_MILISECONDS = 1000;
+    var MINUTE_IN_MILISECONDS = 60 * SECOND_IN_MILISECONDS;
+    var HOUR_IN_MILISECONDS = 60 * MINUTE_IN_MILISECONDS;
+    var DAY_IN_MILISECONDS = HOURS_OF_WORK * HOUR_IN_MILISECONDS;
+    var MONTH_IN_MILISECONDS = DAYS_OF_WORK * DAY_IN_MILISECONDS;
+    var YEAR_IN_MILISECONDS = 12 * MONTH_IN_MILISECONDS;
 
     var years = (num / (YEAR_IN_MILISECONDS));
     var rYears = Math.floor(years);
@@ -353,6 +356,33 @@ $(function(){
         $('#modal-share').modal('show');
 
         return false;
+    });
+
+    $("#form-settings").submit(function(event){
+        event.preventDefault();
+
+        HOURS_OF_WORK = $(this).find("#hours-of-work").val();
+        DAYS_OF_WORK = $(this).find("#days-of-work").val();
+
+        $('#modal-settings').modal('hide');
+
+        return false;
+    });
+
+    
+
+    $("#btn-settings").click(function(event){
+        event.preventDefault();
+
+        $('#modal-settings').modal('show');
+
+        return false;
+    });
+
+    $('#modal-settings').on('show.bs.modal', function (e) {
+
+       $("#hours-of-work").val(HOURS_OF_WORK);
+       $("#days-of-work").val(DAYS_OF_WORK);
     });
 
     $('#modal-share').on('show.bs.modal', function (e) {
