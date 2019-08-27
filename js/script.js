@@ -43,7 +43,7 @@ function convertToURLParameters(entries, compare){
     var prices = "prices=";
 
     $.each(entries, function(i, entry){
-        
+
         countries += entry.countryCode;
         prices += entry.price.toFixed(2);
 
@@ -310,7 +310,6 @@ $(function(){
 
         $('#countries').selectpicker('refresh');
 
-
         var url = new Url;
 
         var countries = ["BRA", "USA"];
@@ -326,8 +325,6 @@ $(function(){
         while(countries.length > prices.length){
             prices.push("0.00");
         }
-
-        // The default entries
 
         for (var i = 0; i < countries.length; i++){
 
@@ -375,60 +372,14 @@ $(function(){
 
         $.get( "data/suggestions.json", function( data ) {       
 
-            var categories = []; 
+            $(".list-group").empty();
 
             $.each(data, function(i, item){
-                
-                if(!categories.includes(item.category)){
-                    categories.push(item.category);
-                }
+
+                var url = getURLForSharing(item.entries, 1);
+
+                $(".list-group").append(`<li class="list-group-item"><a href="${url}">${item.name}</a></li>`)
             }); 
-
-            $("#suggestions-tab").empty();
-
-            $.each(categories, function(i, category){
-
-                var id = `suggestion-${category}`;
-
-                $("#suggestions-tab").append(`<a class="nav-link" data-toggle="pill" href="#${id}">${category}</a>`);
-
-                $("#suggestions-content").append(`<div class="tab-pane fade" id="${id}">
-                    <table class="table table-striped table-hover table-sm">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Country A</th>
-                                <th>Country B</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </div>
-                `);
-            });
-
-            $.each(data, function(i, item){
-
-                var newUrl = getURLForSharing(item["country-a"], item["country-b"], item["product-a"], item["product-b"], 1);
-
-                var countryA = findCountryByCode(item["country-a"]);
-                var countryB = findCountryByCode(item["country-b"]);
-
-                var tr = `
-                    <tr>
-                        <td><a href="${newUrl}">${item.name}</a></td>
-                        <td><span class="flag-icon ${countryA.flag}"></span> ${countryA.code}</td>
-                        <td><span class="flag-icon ${countryB.flag}"></span> ${countryB.code}</td>
-                    </tr>
-                `;
-
-                $(`#suggestion-${item.category} table tbody`).append(tr);
-            });
-
-            // Always select the first tab as default
-            if(categories.length >= 1){
-                $(`#suggestions-tab a[href="#suggestion-${categories[0]}"]`).tab('show')
-            }
         });
     });
 
