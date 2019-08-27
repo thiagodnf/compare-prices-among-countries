@@ -138,26 +138,19 @@ function convertTime(num) {
     
     var text = "";
 
-    if(i == 6){
-        text = "oopppa";
-    }else{
-        for (var j=i;j<6;j++){
-            text += values[j] + " "+labels[j]+", ";
+    if (i == 6){
+        i = 0;
+    }
+
+    for (var j=i;j<6;j++){
+        
+        text += values[j] + " " + labels[j];
+        
+        if( j + 1 != 6){
+            text += ", ";
         }
     }
 
-    console.log(i);
-
-    
-
-    // text += rYears + " year(s), ";
-    // text += rMonths + " month(s), ";
-    // text += rDays + " day(s), ";
-    // text += rHours + " hour(s), ";
-    // text += rMinutes + " minute(s), ";
-    // text += rSeconds + " second(s), and ";
-    // text += rMiliseconds + " milisecond(s)";
-    
     return text;
 }
 
