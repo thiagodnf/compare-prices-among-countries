@@ -15,6 +15,7 @@
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.min.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+        <link rel="stylesheet" type="text/css" href="css/vendor/toast.min.css">
 
         <!-- Custom -->
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
@@ -29,55 +30,29 @@
                 <p><small><a href="#" id="btn-suggestions" >See Sugestions</a></small></p>
             </div>
 
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="country-a">Country A</label>
-                        <select class="form-control countries" id="country-a" data-live-search="true">
-                        </select>
-                        <small id="country-a-help" class="form-text text-muted"></small>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="country-b">Country B</label>
-                        <select class="form-control countries" id="country-b" data-live-search="true">
-                        </select>
-                        <small id="country-b-help" class="form-text text-muted"></small>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="product-a">Product A</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend"><span class="input-group-text" id="product-a-currency-code">$</span></div>
-                            <input type="text" class="form-control money" id="product-a" autofocus autocomplete="off" pattern="[0-9]*">
+            <div class="row ">
+                <div class="col-12">
+                    <div class="input-group">
+                        <select class="form-control" id="countries" data-live-search="true" data-style="btn-outline-secondary" title="Choose the country..."></select>
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button" id="btn-add-country">Add</button>
                         </div>
-                        <small id="product-a-help" class="form-text text-muted"></small>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="product-b">Product B</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend"><span class="input-group-text" id="product-b-currency-code">$</span></div>
-                            <input type="text" class="form-control money" id="product-b" autocomplete="off" pattern="[0-9]*">
-                        </div>
-                        <small id="product-b-help" class="form-text text-muted"></small>
-                    </div>
-                </div>
+            </div>   
+            
+            <div class="entries">  
+                
             </div>
-            <button class="btn btn-success" id="btn-compare">Compare</button>
-            <button class="btn btn-warning float-right" id="btn-share">Share</button>
+
+            <div class="toolbar mt-3">
+                <button class="btn btn-success" id="btn-compare">Compare</button>
+                <button class="btn btn-warning float-right" id="btn-share">Share</button>
+            </div>
 
             <hr/>
-            <div class="row result">
-                <div class="col-6" id="country-a-result">
-                </div>
-                <div class="col-6" id="country-b-result">
-                </div>
+
+            <div class="results mb-4">
             </div>
         </div>
 
@@ -141,6 +116,8 @@
             </div>
         </div>
 
+        
+        
         <!-- Vendors -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
@@ -149,6 +126,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" ></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/domurl@2.2.0/url.min.js" ></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+        <script type="text/javascript" src="js/vendor/toast.min.js"></script>
         
         <script type="text/javascript" src="js/script.js" ></script>
     </body>

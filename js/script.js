@@ -6,6 +6,8 @@ var MONTH_IN_MILISECONDS = 30 * DAY_IN_MILISECONDS;
 var YEAR_IN_MILISECONDS = 12 * MONTH_IN_MILISECONDS;
 
 var data = [];
+var entries = [];
+var ENTRY_ID = 1;
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
@@ -34,9 +36,13 @@ function findCountryByName(name){
 
 function findCountryByCode(code){
 
-    for(var i = 0; i < data.length; i++){
+    if(!code){
+        return null;
+    }
+
+    for (var i = 0; i < data.length; i++){
         
-        if(data[i].code == code){
+        if (data[i].code == code){
             return data[i];
         }
     }
@@ -118,33 +124,60 @@ function convertTime(num) {
 
     var rMiliseconds = Math.floor(num);
 
+    var labels = ["year(s)", "month(s)", "day(s)", "hour(s)", "minute(s)", "second(s)", "milisecond(s)"];
+    var values = [rYears, rMonths, rDays, rHours, rMinutes, rSeconds, rMiliseconds];
+
+    var i = 0;
+
+    while (values[i] == 0){
+        if (i == 6){
+            break;
+        }
+        i++;
+    }
+    
     var text = "";
 
-    text += rYears + " year(s)<br/>";
-    text += rMonths + " month(s)<br/>";
-    text += rDays + " day(s)<br/>";
-    text += rHours + " hour(s)<br/>";
-    text += rMinutes + " minute(s)<br/>";
-    text += rSeconds + " second(s)<br/>";
-    text += rMiliseconds + " milisecond(s)";
+    if(i == 6){
+        text = "oopppa";
+    }else{
+        for (var j=i;j<6;j++){
+            text += values[j] + " "+labels[j]+", ";
+        }
+    }
+
+    console.log(i);
+
+    
+
+    // text += rYears + " year(s), ";
+    // text += rMonths + " month(s), ";
+    // text += rDays + " day(s), ";
+    // text += rHours + " hour(s), ";
+    // text += rMinutes + " minute(s), ";
+    // text += rSeconds + " second(s), and ";
+    // text += rMiliseconds + " milisecond(s)";
     
     return text;
 }
 
-function getHelpText(country){
-    return `${country.currencyCode} ${country.minimumWage} per hour`;
-}
+function getResult(country, timeToBuyIt){
 
-function getResult(country, price){
-
-    var hourA = price;
-    var minutesA = hourA * 60;
-    var secondsA = minutesA * 60;
-    var miliseconds = secondsA * 1000;
+    var hours = timeToBuyIt;
+    var minutes = hours * 60;
+    var seconds = minutes * 60;
+    var miliseconds = seconds * 1000;
     
     var time = convertTime(miliseconds);
 
-    return `A person in ${country.name} needs <br/><b> ${time} </b><br/>to buy this product`;
+    return `
+        <div class="row">
+            <div class="col-12">
+                <p><span class="flag-icon mr-2 ${country.flag}"></span>${country.name}</p>
+                <p class="text-muted">${time}</p>
+            </div>
+        </div>
+    `;
 }
 
 function getProductAFromURL(){
@@ -163,104 +196,83 @@ function getCompareFromURL(){
     return (new Url).query["compare"];
 }
 
-function getDefaultCompare(){
-    return convertToFloat(getCompareFromURL()) || 0;
-}
-function getDefaultProductA(){
-    return convertToFloat(getProductAFromURL()) || 0.0;;
-}
-function getDefaultProductB(){
-    return convertToFloat(getProductBFromURL()) || 0.0;;
-}
-function getDefaultCountryA(){
-    return findCountryByCode(getCountryAFromURL()) || findCountryByName("Brazil");
-}
-function getDefaultCountryB(){
-    return findCountryByCode(getCountryBFromURL()) || findCountryByName("United States of America");
-}
+function getEntryHTML(country){
 
-function compare(){
-   
-    var countryA = getCountryAName();
-    var countryB = getCountryBName();
+    var entryId = ENTRY_ID++;
 
-    var priceOfProductA = getPriceOfProductA();
-    var priceOfProductB = getPriceOfProductB();
-
-    var timeToBuyA = priceOfProductA/countryA.minimumWage;
-    var timeToBuyB = priceOfProductB/countryB.minimumWage;
-
-    $("#country-a-result").html(getResult(countryA, timeToBuyA));
-    $("#country-b-result").html(getResult(countryB, timeToBuyB));
-
-    updateURL(countryA.code, countryB.code, priceOfProductA, priceOfProductB);
-    
-    $('html, body').animate({
-        scrollTop: $(".result").offset().top
-    }, 1000);
+    return `
+        <div class="row entry mt-3" id="entry-${entryId}" data-country-code="${country.code}"> 
+            <div class="col-12"> 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="card-title" ><span class="flag-icon mr-2 ${country.flag}"></span>${country.name}</h5>
+                            <button type="button" class="close btn-remove" data-dismiss="modal" data-id="#entry-${entryId}">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group mb-0">
+                                    <label for="price-${entryId}">Price</label>
+                                    <div class="input-group ">
+                                        <div class="input-group-prepend"><span class="input-group-text">${country.currency}</span></div>
+                                        <input type="text" class="form-control price" id="price-${entryId}" autofocus autocomplete="off" pattern="[0-9]*" value="0.00">
+                                    </div>
+                                    <small id="product-a-hep" class="form-text text-muted">${country.currency} ${country.minimumWage} per hour</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
 }
 
-function getPriceOfProductA(){
+function getEntries(){
 
-    var productA = $("#product-a").val();
+    var entries = [];
 
-    if(!productA){
-        throw new Error("The price of Product A is required");
-    }
+    $(".entry").each(function(i, entry){
 
-    productA = productA.replaceAll(",","");
+        var countryCode = $(this).data("country-code");
+        var price = $(this).find(".price").val();
 
-    return convertToFloat(productA);
+        if (!price){
+            throw new Error(`The price in ${countryCode} should not be empty or null`);
+        }
+
+        price = convertToFloat(price.replaceAll(",",""));
+
+        if (price === undefined){
+            throw new Error(`The price in ${countryCode} is not a valid number`);
+        }
+        
+        entries.push({
+            countryCode: $(this).data("country-code"),
+            price: price,
+        });
+    });
+
+    return entries;
 }
 
-function getPriceOfProductB(){
-
-    var productB = $("#product-b").val();
-
-    if(!productB){
-        throw new Error("The price of Product B is required");
-    }
-
-    productB = productB.replaceAll(",","");
-
-    return convertToFloat(productB);
-}
-
-function getCountryAName(){
-
-    var countryName = $("#country-a").val();
-
-    if(!countryName){
-        throw new Error("The country name is required");
-    }
-
-    return findCountryByName(countryName);
-}
-
-function getCountryBName(){
-
-    var countryName = $("#country-b").val();
-
-    if(!countryName){
-        throw new Error("The country name is required");
-    }
-
-    return findCountryByName(countryName);
+function addEntry(html){
+    $(".entries").append(html).find(".price").mask('000,000,000,000,000.00', {reverse: true});
 }
 
 $(function(){
 
-    $('.money').mask('000,000,000,000,000.00', {reverse: true});
-
-    $('[data-toggle="popover"]').popover()
-
-    $("#country-a").selectpicker();
-    $("#country-b").selectpicker({dropdownAlignRight: true});
-
     new ClipboardJS('.btn-copy-to-clipboard');
     
+    // Manage all errors
     window.addEventListener("error", function (e) {
-        alert(e.error.message);
+        $.toast({
+            title: 'Error',
+            content: e.error.message,
+            type: 'danger',
+            delay: 2000,
+        });
         return false;
     })
 
@@ -280,57 +292,18 @@ $(function(){
        
         $.each(data, function(i, country){
 
-            $('.countries')
+            $('#countries')
                 .append($("<option></option>")
-                .attr("value", country.name)
+                .attr("value", country.code)
                 .attr("data-icon", "flag-icon " + country.flag)
                 .text(country.name));
-            
         })
 
-        $('.countries').selectpicker('refresh');
+        $('#countries').selectpicker('refresh');
 
-        // The default values
-        $('#country-a').selectpicker('val', getDefaultCountryA().name);
-        $('#country-b').selectpicker('val', getDefaultCountryB().name);
-
-        $('#product-a').val($('#product-a').masked(getDefaultProductA().toFixed(2)));
-        $('#product-b').val($('#product-b').masked(getDefaultProductB().toFixed(2)));
-
-        $("#product-a").focus();
-        $("#product-a").select();
-
-        if(getDefaultCompare() == 1){
-            compare();
-        }
-    });
-
-    $(".countries").on("changed.bs.select", function(event, clickedIndex, newValue, oldValue) {
-        event.preventDefault();
-
-        var id = $(this).attr("id");
-
-        var country = findCountryByName(this.value);
-
-        $(`#${id}-help`).text(getHelpText(country));
-        
-        if(id == "country-a"){
-            $("#product-a-currency-code").text(country.currencyCode);
-            $("#product-a-help").text(`Type the price in ${country.name}`);
-        }else if(id == "country-b"){
-            $("#product-b-currency-code").text(country.currencyCode);
-            $("#product-b-help").text(`Type the price in ${country.name}`);
-        }
-
-        return false;
-    });
-
-    $("#btn-compare").click(function(event){
-        event.preventDefault();
-
-        compare();
-
-        return false;
+        // The default entries
+        addEntry(getEntryHTML(findCountryByCode("BRA")));
+        addEntry(getEntryHTML(findCountryByCode("USA")));
     });
 
     $("#btn-suggestions").click(function(event){
@@ -349,7 +322,6 @@ $(function(){
         return false;
     });
 
-
     $('#modal-share').on('show.bs.modal', function (e) {
 
         var countryA = getCountryAName();
@@ -362,9 +334,7 @@ $(function(){
 
         $("#share-url").val(newUrl);
     });
-
     
-
     $('#modal-suggestions').on('show.bs.modal', function (e) {
 
         $.get( "data/suggestions.json", function( data ) {       
@@ -424,6 +394,71 @@ $(function(){
                 $(`#suggestions-tab a[href="#suggestion-${categories[0]}"]`).tab('show')
             }
         });
+    });
+
+    $("#btn-add-country").click(function(event){
+        event.preventDefault();
+
+        var countryCode = $("#countries").val();
+
+        if (!countryCode){
+            throw new Error("The country code can not be null or empty");
+        }
+
+        var country = findCountryByCode(countryCode);
+
+        if (!country){
+            throw new Error("The country code does not exists");
+        }
+
+        var entries = getEntries();
+
+        if (entries.filter(e => e.countryCode === countryCode).length > 0) {
+            throw new Error("This country has been already added");
+        }
+
+        addEntry(getEntryHTML(country));
+        
+        return false;
+    });
+
+    $(document).on('click', ".btn-remove", function (e) {
+        event.preventDefault();
+
+        var entryId = $(this).data("id");
+
+        $(entryId).remove();
+
+        return false;
+    });
+
+    $("#btn-compare").click(function(event){
+        event.preventDefault();
+
+        var entries = getEntries();
+
+        if (entries.length == 0){
+            throw new Error("There are no countries");
+        }
+
+        $(".results").empty().append(`<h3 class="mb-3">Results</h3>`);
+
+        $.each(entries, function(i, entry){
+
+            var country = findCountryByCode(entry.countryCode);
+
+            var timeToBuyIt = entry.price/country.minimumWage;
+
+            var result = getResult(country, timeToBuyIt);
+
+            $(".results").append(result);
+        })
+    
+        $('html, body').animate({
+            scrollTop: $(".results").offset().top
+        }, 1000);
+      
+        return false;
     });
    
 })

@@ -1,0 +1,62 @@
+body{
+    background-color: rgb(250, 250, 250);
+}
+
+.t-card{
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+
+.card .btn-remove{
+    margin-top: -20px;
+}
+
+/* .toast-message{
+	z-index: 10000;
+    position: fixed;
+    left: 0;
+    bottom: 150px;
+    padding-right: 150px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;		
+} */
+
+.toast-wrapper{
+    z-index: 10000;
+    position: fixed;
+    left: 0;
+    bottom: 0 !important;
+    top: auto;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 15px;
+}
+
+@media (min-width:576px) {
+    .toast-wrapper {
+        max-width: 540px
+    }
+}
+
+@media (min-width:768px) {
+    .toast-wrapper {
+        max-width: 720px
+    }
+}
+
+@media (min-width:992px) {
+    .toast-wrapper {
+        max-width: 960px
+    }
+}
+
+@media (min-width:1200px) {
+    .toast-wrapper {
+        max-width: 1140px
+    }
+}

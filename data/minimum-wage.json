@@ -1,26 +1,30 @@
 [
     {
-        "name": "United States of America",
         "code": "USA",
+        "name": "United States of America",
         "flag": "flag-icon-us",
-        "currency": "USD",
-        "currencyCode": "US$",
+        "currency": "US$",
         "minimumWage": "7.50" 
     },
     {
-        "name": "Brazil",
         "code": "BRA",
+        "name": "Brazil",
         "flag": "flag-icon-br",
-        "currency": "Real",
-        "currencyCode": "R$",
+        "currency": "R$",
         "minimumWage": "4.54" 
     },
     {
-        "name": "Germany",
         "code": "DEU",
+        "name": "Germany",
         "flag": "flag-icon-de",
-        "currency": "Euro",
-        "currencyCode": "€",
+        "currency": "€",
         "minimumWage": "9.19" 
+    },
+    {
+        "code": "CAN",
+        "name": "Canada",
+        "flag": "flag-icon-ca",
+        "currency": "C$",
+        "minimumWage": "11.06" 
     }
 ]
