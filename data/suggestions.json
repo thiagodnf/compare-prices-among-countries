@@ -43,7 +43,11 @@
             {
                 "countryCode": "BRA",
                 "price": 299000.00
-            }
+            },
+            {
+                "countryCode": "DEU",
+                "price": 38090.00
+            },
         ]
     }
 ]
