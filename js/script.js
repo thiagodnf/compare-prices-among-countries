@@ -6,7 +6,6 @@ var MONTH_IN_MILISECONDS = 30 * DAY_IN_MILISECONDS;
 var YEAR_IN_MILISECONDS = 12 * MONTH_IN_MILISECONDS;
 
 var data = [];
-var entries = [];
 var ENTRY_ID = 1;
 
 String.prototype.replaceAll = function(search, replacement) {
@@ -20,18 +19,6 @@ function updateURL(countryA, countryB, productA, productB){
         var url = getURLForSharing(countryA, countryB, productA, productB, 0);
         window.history.pushState({path: url}, '', url);
     }
-}
-
-function findCountryByName(name){
-
-    for(var i = 0; i < data.length; i++){
-        
-        if(data[i].name == name){
-            return data[i];
-        }
-    }
-
-    return;
 }
 
 function findCountryByCode(code){
