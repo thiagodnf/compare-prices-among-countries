@@ -1,5 +1,5 @@
-var HOURS_OF_WORK = 8;
-var DAYS_OF_WORK = 22;
+var HOURS_OF_WORK = 24;
+var DAYS_OF_WORK = 30;
 
 var data = [];
 var ENTRY_ID = 1;
