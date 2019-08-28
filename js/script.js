@@ -1,5 +1,5 @@
-var HOURS_OF_WORK = 24;
-var DAYS_OF_WORK = 30;
+var HOURS_OF_WORK = 8;
+var DAYS_OF_WORK = 22;
 
 var data = [];
 var ENTRY_ID = 1;
@@ -96,6 +96,12 @@ function convertTime(num) {
     var DAY_IN_MILISECONDS = HOURS_OF_WORK * HOUR_IN_MILISECONDS;
     var MONTH_IN_MILISECONDS = DAYS_OF_WORK * DAY_IN_MILISECONDS;
     var YEAR_IN_MILISECONDS = 12 * MONTH_IN_MILISECONDS;
+    var CENTURY_IN_MILISECONDS = 100 * YEAR_IN_MILISECONDS;
+
+    var centuries = (num / (CENTURY_IN_MILISECONDS));
+    var rCenturies = Math.floor(centuries);
+
+    num = num - rCenturies * CENTURY_IN_MILISECONDS;
 
     var years = (num / (YEAR_IN_MILISECONDS));
     var rYears = Math.floor(years);
@@ -129,13 +135,13 @@ function convertTime(num) {
 
     var rMiliseconds = Math.floor(num);
 
-    var labels = ["year(s)", "month(s)", "day(s)", "hour(s)", "minute(s)", "second(s)", "milisecond(s)"];
-    var values = [rYears, rMonths, rDays, rHours, rMinutes, rSeconds, rMiliseconds];
+    var labels = ["century(ies)", "year(s)", "month(s)", "day(s)", "hour(s)", "minute(s)", "second(s)", "milisecond(s)"];
+    var values = [rCenturies, rYears, rMonths, rDays, rHours, rMinutes, rSeconds, rMiliseconds];
 
     var i = 0;
 
     while (values[i] == 0){
-        if (i == 6){
+        if (i == (labels.length - 1)){
             break;
         }
         i++;
@@ -143,15 +149,15 @@ function convertTime(num) {
     
     var text = "";
 
-    if (i == 6){
+    if (i == (labels.length - 1)){
         i = 0;
     }
 
-    for (var j=i;j<6;j++){
+    for (var j = i; j < (labels.length - 1); j++){
         
         text += values[j] + " " + labels[j];
         
-        if( j + 1 != 6){
+        if (j + 1 != (labels.length - 1)){
             text += ", ";
         }
     }
@@ -180,7 +186,7 @@ function getResult(country, timeToBuyIt){
 
 function getEntryHTML(country, price = 0.0){
 
-    if(!country){
+    if (!country){
         return "";
     }
 
@@ -361,10 +367,25 @@ $(function(){
     $("#form-settings").submit(function(event){
         event.preventDefault();
 
-        HOURS_OF_WORK = $(this).find("#hours-of-work").val();
-        DAYS_OF_WORK = $(this).find("#days-of-work").val();
+        var hoursOfWork = $(this).find("#hours-of-work").val();
+        var daysOfWork = $(this).find("#days-of-work").val();
+
+        hoursOfWork = convertToFloat(hoursOfWork);
+        daysOfWork = convertToFloat(daysOfWork);
+       
+        if (hoursOfWork === undefined){
+            throw new Error(`The hours of work is not a valid number`);
+        }
+        if (daysOfWork === undefined){
+            throw new Error(`The days of work is not a valid number`);
+        }
+
+        HOURS_OF_WORK = hoursOfWork;
+        DAYS_OF_WORK = daysOfWork; 
 
         $('#modal-settings').modal('hide');
+
+        compare();
 
         return false;
     });
