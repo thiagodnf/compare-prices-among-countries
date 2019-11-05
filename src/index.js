@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { createBrowserHistory } from "history";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
@@ -11,13 +12,15 @@ import Compare from './pages/compare/Compare';
 
 import './index.css';
 
+const history = createBrowserHistory();
+
 const routing = (
-    <Router>
-        <div>
-            <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
-            <Route exact path={process.env.PUBLIC_URL + "/home"} component={Home} />
-            <Route path={process.env.PUBLIC_URL + "/compare"} component={Compare} />
-        </div>
+    <Router history={history} basename={process.env.PUBLIC_URL}>
+        <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/compare" component={Compare} />
+            <Route component={() => (<div>404 Not found </div>)} />
+        </Switch>
     </Router>
 )
 
