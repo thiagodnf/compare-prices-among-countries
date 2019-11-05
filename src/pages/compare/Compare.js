@@ -21,7 +21,7 @@ class Compare extends Component {
 
     componentDidMount(){
 
-        fetch("/data/countries.json")
+        fetch("/compare-prices-among-countries/data/countries.json")
             .then(res => res.json())
             .then((result) => {
 

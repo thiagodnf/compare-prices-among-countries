@@ -26,7 +26,7 @@ class Home extends Component {
 
     componentDidMount(){
 
-        fetch("/data/countries.json")
+        fetch(`${process.env.PUBLIC_URL}/data/countries.json`)
             .then(res => res.json())
             .then((result) => {
                 result.sort((a, b) => {
