@@ -65,7 +65,7 @@ class Home extends Component {
                 <Container fluid="true">
                     <Card className="rounded mb-3">
                         <Card.Body>
-                            <Form action="/compare" onSubmit={this.handleSubmit} autoComplete="off">
+                            <Form action="/compare-prices-among-countries/compare" onSubmit={this.handleSubmit} autoComplete="off">
                                 <Form.Group controlId="exampleForm.ControlInput1">
                                     <Form.Label>Product Name</Form.Label>
                                     <Form.Control type="text" name="productName" autoComplete="off" autoFocus required/>

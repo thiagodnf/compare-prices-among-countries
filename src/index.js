@@ -15,9 +15,9 @@ import './index.css';
 const routing = (
     <Router>
         <div>
-            <Route path="/" component={Home} />
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/compare" component={Compare} />
+            <Route exact path="/compare-prices-among-countries" component={Home} />
+            <Route exact path="/compare-prices-among-countries/home" component={Home} />
+            <Route exact path="/compare-prices-among-countries/compare" component={Compare} />
         </div>
     </Router>
 )

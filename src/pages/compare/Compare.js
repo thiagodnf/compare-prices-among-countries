@@ -64,7 +64,7 @@ class Compare extends Component {
                                 })}
                                 </tbody>
                             </table>
-                            <Button variant="primary" href="/">Back</Button>
+                            <Button variant="primary" href="/compare-prices-among-countries">Back</Button>
                         </Card.Body>
                     </Card>
                 </Container>
