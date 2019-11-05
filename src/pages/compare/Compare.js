@@ -21,7 +21,7 @@ class Compare extends Component {
 
     componentDidMount(){
 
-        fetch("/compare-prices-among-countries/data/countries.json")
+        fetch(`${process.env.PUBLIC_URL}/data/countries.json`)
             .then(res => res.json())
             .then((result) => {
 
@@ -64,7 +64,7 @@ class Compare extends Component {
                                 })}
                                 </tbody>
                             </table>
-                            <Button variant="primary" href="/compare-prices-among-countries">Back</Button>
+                            <Button variant="primary" href={process.env.PUBLIC_URL+"/"}>Back</Button>
                         </Card.Body>
                     </Card>
                 </Container>
