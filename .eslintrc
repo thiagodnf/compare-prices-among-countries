@@ -1,0 +1,19 @@
+{
+    "plugins": [
+        "requirejs"
+    ],
+    "extends": [
+        "standard"
+    ],
+    "env": {
+        "jasmine": true,
+        "amd": true
+    },
+    "rules": {
+        "indent": [2, 4],
+        "requirejs/no-invalid-define": 2,
+        "requirejs/no-multiple-define": 2,
+        "requirejs/no-commonjs-wrapper": 2,
+        "requirejs/no-object-define": 1
+    }
+}

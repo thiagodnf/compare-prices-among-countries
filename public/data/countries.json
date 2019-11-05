@@ -1,0 +1,264 @@
+[
+    {
+        "code": "AUS",
+        "name": "Australia",
+        "flag": "flag-icon-au",
+        "currency": "AU$",
+        "minimumWage": 19,
+        "payPeriod": "hour"
+    },
+    {
+        "code": "DEU",
+        "name": "Germany",
+        "flag": "flag-icon-de",
+        "currency": "€",
+        "minimumWage": 1498.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "BEL",
+        "name": "Belgium",
+        "flag": "flag-icon-be",
+        "currency": "€",
+        "minimumWage": 1563.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "CAN",
+        "name": "Canada",
+        "flag": "flag-icon-ca",
+        "currency": "C$",
+        "minimumWage": 13,
+        "payPeriod": "hour"
+    },
+    {
+        "code": "CHL",
+        "name": "Chile",
+        "flag": "flag-icon-cl",
+        "currency": "CLP$",
+        "minimumWage": 282000.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "CZE",
+        "name": "Czech Republic",
+        "flag": "flag-icon-cz",
+        "currency": "Kč",
+        "minimumWage": 12200.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "EST",
+        "name": "Estonia",
+        "flag": "flag-icon-ee",
+        "currency": "€",
+        "minimumWage": 500.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "FRA",
+        "name": "France",
+        "flag": "flag-icon-fr",
+        "currency": "€",
+        "minimumWage": 1498.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "GRC",
+        "name": "Greece",
+        "flag": "flag-icon-gr",
+        "currency": "€",
+        "minimumWage": 683.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "HUN",
+        "name": "Hungary",
+        "flag": "flag-icon-hu",
+        "currency": "HUF",
+        "minimumWage": 138000.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "IRL",
+        "name": "Ireland",
+        "flag": "flag-icon-ie",
+        "currency": "€",
+        "minimumWage": 10.00,
+        "payPeriod": "hour"
+    },
+    {
+        "code": "ISR",
+        "name": "Israel",
+        "flag": "flag-icon-il",
+        "currency": "ILS",
+        "minimumWage": 5300.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "JPN",
+        "name": "Japan",
+        "flag": "flag-icon-jp",
+        "currency": "¥",
+        "minimumWage": 855.00,
+        "payPeriod": "hour"
+    },
+    {
+        "code": "KOR",
+        "name": "Korea",
+        "flag": "flag-icon-kr",
+        "currency": "₩",
+        "minimumWage": 1573770.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "LVA",
+        "name": "Latvia",
+        "flag": "flag-icon-lv",
+        "currency": "€",
+        "minimumWage": 430.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "LTU",
+        "name": "Lithuania",
+        "flag": "flag-icon-lt",
+        "currency": "€",
+        "minimumWage": 400.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "LUX",
+        "name": "Luxembourg",
+        "flag": "flag-icon-lu",
+        "currency": "€",
+        "minimumWage": 2019.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "NLD",
+        "name": "Netherlands",
+        "flag": "flag-icon-nl",
+        "currency": "€",
+        "minimumWage": 1586.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "NZL",
+        "name": "New Zealand",
+        "flag": "flag-icon-nz",
+        "currency": "NZ$",
+        "minimumWage": 16.00,
+        "payPeriod": "hour"
+    },
+    {
+        "code": "POL",
+        "name": "Poland",
+        "flag": "flag-icon-pl",
+        "currency": "zł",
+        "minimumWage": 2100.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "PRT",
+        "name": "Portugal",
+        "flag": "flag-icon-pt",
+        "currency": "€",
+        "minimumWage": 677.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "SVK",
+        "name": "Slovak Republic",
+        "flag": "flag-icon-sk",
+        "currency": "€",
+        "minimumWage": 480.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "SVN",
+        "name": "Slovenia",
+        "flag": "flag-icon-si",
+        "currency": "€",
+        "minimumWage": 843.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "ESP",
+        "name": "Spain",
+        "flag": "flag-icon-es",
+        "currency": "€",
+        "minimumWage": 859.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "GBR",
+        "name": "United Kingdom ",
+        "flag": "flag-icon-gb",
+        "currency": "£",
+        "minimumWage": 8.00,
+        "payPeriod": "hour"
+    },
+    {
+        "code": "USA",
+        "name": "United States of America",
+        "flag": "flag-icon-us",
+        "currency": "US$",
+        "minimumWage": 7.00,
+        "payPeriod": "hour"
+    },
+    {
+        "code": "COL",
+        "name": "Colombia",
+        "flag": "flag-icon-co",
+        "currency": "COL$",
+        "minimumWage": 781242.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "CRI",
+        "name": "Costa Rica",
+        "flag": "flag-icon-cr",
+        "currency": "CRC",
+        "minimumWage": 262298.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "BRA",
+        "name": "Brazil",
+        "flag": "flag-icon-br",
+        "currency": "R$",
+        "minimumWage": 954.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "MLT",
+        "name": "Malta",
+        "flag": "flag-icon-mt",
+        "currency": "€",
+        "minimumWage": 748.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "ROU",
+        "name": "Romania",
+        "flag": "flag-icon-ro",
+        "currency": "L",
+        "minimumWage": 1900.00,
+        "payPeriod": "month"
+    },
+    {
+        "code": "RUS",
+        "name": "Russian Federation",
+        "flag": "flag-icon-ru",
+        "currency": "₽",
+        "minimumWage": 10605.00,
+        "payPeriod": "month"
+    }
+
+
+
+
+
+
+]

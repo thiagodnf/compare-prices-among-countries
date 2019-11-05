@@ -1,26 +1,25 @@
 {
-	"name": "compare-prices-among-countries",
-	"version": "1.0.0",
-	"description": "See the time needed to buy the same product among different countries",
-	"main": "server.js",
-	"scripts": {
-		"start": "node server.js"
-	},
-	"engines": {
-		"node": ">=8.9.1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/thiagodnf/compare-prices-among-countries.git"
-	},
-	"author": "Thiago Ferreira",
-	"license": "MIT",
-	"homepage": "https://thiagodnf.github.io/compare-prices-among-countries",
-	"dependencies": {
-		"serve-static": "^1.13.2",
-		"connect": "^3.6.6",
-		"network": "^0.4.1",
-		"winston": "^2.4.2",
-		"livereload": "^0.7.0"
-	}
+    "name": "compare-prices-among-countries",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "react": "^16.11.0",
+        "react-dom": "^16.11.0",
+        "react-scripts": "0.9.5",
+        "react-router-dom": "5.1.2",
+        "jquery": "3.4.1",
+        "bootstrap": "4.3.1",
+        "react-bootstrap": "1.0.0-beta.14",
+        "query-string-es5": "6.1.4",
+        "flag-icon-css": "3.4.5"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject",
+        "predeploy": "npm run build",
+        "move": "mv build docs || move build docs"
+    }
 }

@@ -1,0 +1,35 @@
+
+/*
+ *   Navbar
+ */
+ .navbar-custom {
+    background-color: #3e474f;
+}
+
+  /* change the brand and text color */
+  .navbar-custom .navbar-brand,
+  .navbar-custom .navbar-text {
+    color: #5fcf80; }
+
+  .navbar-toggler {
+    border-color: #9ea3a7 !important; }
+
+  .navbar-toggler-icon {
+    color: #edeff0 !important; }
+
+  .navbar-custom .navbar-brand:hover {
+    color: white; }
+
+  /* change the link color */
+  .navbar-custom .navbar-nav .nav-link {
+    color: #edeff0 !important; }
+
+  .navbar-custom .navbar-nav .nav-link:hover {
+    color: white; }
+
+
+    .dropdown-item.active, .dropdown-item:active  {
+        color: #16181b;
+        text-decoration: none;
+        background-color: white;
+    }
