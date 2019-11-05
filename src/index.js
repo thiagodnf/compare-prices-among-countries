@@ -24,6 +24,8 @@ const routing = (
     </Router>
 )
 
+console.log("process.env.PUBLIC_URL", process.env.PUBLIC_URL);
+
 ReactDOM.render(
     routing,
     document.getElementById('root')
