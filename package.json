@@ -1,6 +1,10 @@
 {
     "name": "compare-prices-among-countries",
-    "version": "0.1.0",
+    "version": "2.0.0",
+    "author": "Thiago Ferreira",
+	"license": "MIT",
+    "description": "See the time needed to buy the same product among different countries",
+    "homepage": "https://thiagodnf.github.io/compare-prices-among-countries",
     "private": true,
     "dependencies": {
         "react": "^16.11.0",
