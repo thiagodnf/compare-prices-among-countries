@@ -16,7 +16,7 @@ const routing = (
         <div>
             <Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
             <Route exact path={process.env.PUBLIC_URL + "/home"} component={Home} />
-            <Route exact path={process.env.PUBLIC_URL + "/compare"} component={Compare} />
+            <Route path={process.env.PUBLIC_URL + "/compare"} component={Compare} />
         </div>
     </Router>
 )
